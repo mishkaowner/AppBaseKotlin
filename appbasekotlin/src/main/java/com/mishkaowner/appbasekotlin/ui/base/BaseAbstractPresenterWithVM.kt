@@ -1,11 +1,13 @@
 package com.mishkaowner.appbasekotlin.ui.base
 
 import android.util.Log
-import com.mishkaowner.appbasekotlin.util.ISharedDataEditor
+import io.realm.Realm
+import io.realm.RealmObject
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : BaseViewModel>(view: V, protected val sharedDataEditor : ISharedDataEditor) : BaseAbstractPresenter<V>(view) {
-    protected var vm : VM? = null
+
+abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : RealmObject>(view: V) : BaseAbstractPresenter<V>(view) {
+    protected var vm: VM? = null
 
     override fun onResume() {
         super.onResume()
@@ -19,20 +21,23 @@ abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : BaseViewModel>
             } catch (e: Exception) {
                 Log.d("Base", e.toString())
             }
-
         }
     }
 
     override fun onSave() {
         super.onSave()
-        sharedDataEditor.saveData((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
+        Realm.getDefaultInstance().use { it.executeTransaction { it.insertOrUpdate(vm) } }
     }
 
     override fun onRestore() {
         super.onRestore()
-        vm = sharedDataEditor.loadData((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>)
-        if (vm != null) {
-            onResumeWithRestoredVM(vm)
+        Realm.getDefaultInstance().use {
+            it.executeTransaction {
+                vm = it.where((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>).findFirst()
+                if (vm != null) {
+                    onResumeWithRestoredVM(vm)
+                }
+            }
         }
     }
 
