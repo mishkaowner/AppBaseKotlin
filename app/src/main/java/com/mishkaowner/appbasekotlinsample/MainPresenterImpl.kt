@@ -1,6 +1,7 @@
 package com.mishkaowner.appbasekotlinsample
 
 import com.mishkaowner.appbasekotlin.ui.base.BaseAbstractPresenter
+import com.mishkaowner.appbasekotlin.util.applyObservableScheduler
 import io.reactivex.rxkotlin.toObservable
 
 class MainPresenterImpl(view: MainView) : BaseAbstractPresenter<MainView>(view), MainPresenter {

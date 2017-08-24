@@ -1,11 +1,6 @@
 package com.mishkaowner.appbasekotlin.ui.base
 
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 
 abstract class BaseAbstractPresenter<out V : BaseView>(protected val view: V) : BasePresenter {
@@ -17,7 +12,7 @@ abstract class BaseAbstractPresenter<out V : BaseView>(protected val view: V) : 
     }
 
     override fun onPause() {
-        if (disposeOnPause != null && !(disposeOnPause?.isDisposed ?:true)) {
+        if (!(disposeOnPause?.isDisposed ?:true)) {
             disposeOnPause?.dispose()
         }
     }
@@ -31,12 +26,8 @@ abstract class BaseAbstractPresenter<out V : BaseView>(protected val view: V) : 
     }
 
     override fun onDestroy() {
-        if (disposeOnDestroy != null && !(disposeOnDestroy?.isDisposed ?:true)) {
+        if (!(disposeOnDestroy?.isDisposed ?:true)) {
             disposeOnDestroy?.dispose()
         }
     }
-
-    protected fun <T> Observable<T>.applyObservableScheduler() = subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())!!
-    protected fun Completable.applyCompletableSchedulers() = subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())!!
-    protected fun <T> Maybe<T>.applyMaybeSchedulers() = subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())!!
 }

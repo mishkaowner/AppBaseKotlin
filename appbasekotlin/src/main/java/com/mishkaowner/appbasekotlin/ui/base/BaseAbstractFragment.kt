@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseAbstractFragment : Fragment(), BaseView {
-    protected val NO_LAYOUT : Int = -1
+    protected val NO_LAYOUT: Int = -1
     protected var disposeOnPause: CompositeDisposable? = null
     protected var disposeOnDestroy: CompositeDisposable? = null
 
@@ -19,10 +19,9 @@ abstract class BaseAbstractFragment : Fragment(), BaseView {
         }
     }
 
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (getLayoutID() != NO_LAYOUT && inflater != null && container != null) {
-            return inflater.inflate(getLayoutID(), container, false)
+        if (getLayoutID() != NO_LAYOUT && container != null) {
+            return inflater?.inflate(getLayoutID(), container, false)
         } else {
             return null
         }
@@ -44,7 +43,7 @@ abstract class BaseAbstractFragment : Fragment(), BaseView {
     override fun onPause() {
         super.onPause()
         getPresenter()?.onPause()
-        if (disposeOnPause != null && !(disposeOnPause?.isDisposed ?:true)) {
+        if (!(disposeOnPause?.isDisposed ?: true)) {
             disposeOnPause?.dispose()
         }
     }
@@ -52,7 +51,7 @@ abstract class BaseAbstractFragment : Fragment(), BaseView {
     override fun onDestroyView() {
         super.onDestroyView()
         getPresenter()?.onDestroy()
-        if (disposeOnDestroy != null && !(disposeOnDestroy?.isDisposed ?:true)) {
+        if (!(disposeOnDestroy?.isDisposed ?: true)) {
             disposeOnDestroy?.dispose()
         }
     }

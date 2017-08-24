@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 
-
 abstract class BaseActivity : AppCompatActivity(), BaseView {
+    protected val NO_LAYOUT: Int = -1
     protected var disposeOnPause : CompositeDisposable? = null
     protected var disposeOnDestroy : CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         disposeOnDestroy = CompositeDisposable()
-        setContentView(getLayoutID())
+        if(getLayoutID() != NO_LAYOUT) {
+            setContentView(getLayoutID())
+        }
         inject()
         if (savedInstanceState != null) {
             getPresenter()?.onRestore()
@@ -31,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     public override fun onPause() {
         super.onPause()
         getPresenter()?.onPause()
-        if (disposeOnPause != null && !(disposeOnPause?.isDisposed ?:true)) {
+        if (!(disposeOnPause?.isDisposed ?:true)) {
             disposeOnPause?.dispose()
         }
     }
@@ -44,7 +46,7 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     override fun onDestroy() {
         super.onDestroy()
         getPresenter()?.onDestroy()
-        if (disposeOnDestroy != null && !(disposeOnDestroy?.isDisposed ?:true)) {
+        if (!(disposeOnDestroy?.isDisposed ?:true)) {
             disposeOnDestroy?.dispose()
         }
     }
