@@ -1,4 +1,4 @@
-package com.mishkaowner.appbasekotlin
+package com.mishkaowner.appbasekotlin.ui.base
 
 interface BasePresenter {
     fun onCreate()

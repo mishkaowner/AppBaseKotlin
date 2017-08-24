@@ -1,9 +1,12 @@
 package com.mishkaowner.appbasekotlinsample
 
-import com.mishkaowner.appbasekotlin.BaseAbstractPresenter
+import com.mishkaowner.appbasekotlin.ui.base.BaseAbstractPresenter
+import io.reactivex.rxkotlin.toObservable
 
 class MainPresenterImpl(view: MainView) : BaseAbstractPresenter<MainView>(view), MainPresenter {
     override fun onSimpleBtClicked() {
+        val s = listOf("asfd", "asdf")
+        s.toObservable().applyObservableScheduler().subscribe({println("it is $it")})
         view.displayHelloWorld()
     }
 

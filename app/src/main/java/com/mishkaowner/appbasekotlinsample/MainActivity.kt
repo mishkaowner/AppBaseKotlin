@@ -1,8 +1,8 @@
 package com.mishkaowner.appbasekotlinsample
 
 import android.widget.Toast
-import com.mishkaowner.appbasekotlin.BaseActivity
-import com.mishkaowner.appbasekotlin.BasePresenter
+import com.mishkaowner.appbasekotlin.ui.base.BaseActivity
+import com.mishkaowner.appbasekotlin.ui.base.BasePresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), MainView{
