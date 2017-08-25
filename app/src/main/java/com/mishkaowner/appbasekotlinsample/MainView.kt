@@ -4,5 +4,5 @@ import com.mishkaowner.appbasekotlin.ui.base.BaseView
 
 interface MainView : BaseView {
     fun bindView()
-    fun displayHelloWorld()
+    fun sayTheName(name: String)
 }

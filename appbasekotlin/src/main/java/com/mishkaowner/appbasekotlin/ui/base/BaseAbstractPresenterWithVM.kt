@@ -5,15 +5,21 @@ import io.realm.Realm
 import io.realm.RealmObject
 import java.lang.reflect.ParameterizedType
 
-
+@Suppress("UNCHECKED_CAST")
 abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : RealmObject>(view: V) : BaseAbstractPresenter<V>(view) {
     protected var vm: VM? = null
+    private var realm: Realm? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        realm = Realm.getDefaultInstance()
+    }
 
     override fun onResume() {
         super.onResume()
         if (vm == null) {
             try {
-                val vmClass = (javaClass.genericSuperclass as ParameterizedType).getActualTypeArguments()[1] as Class<VM>
+                val vmClass = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
                 vm = vmClass.newInstance()
                 if (vm != null) {
                     onResumeWithFreshVM(vm)
@@ -26,19 +32,23 @@ abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : RealmObject>(v
 
     override fun onSave() {
         super.onSave()
-        Realm.getDefaultInstance().use { it.executeTransaction { it.insertOrUpdate(vm) } }
+        realm?.executeTransaction { it.insertOrUpdate(vm) }
     }
 
     override fun onRestore() {
         super.onRestore()
-        Realm.getDefaultInstance().use {
-            it.executeTransaction {
-                vm = it.where((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>).findFirst()
-                if (vm != null) {
-                    onResumeWithRestoredVM(vm)
-                }
+        realm = Realm.getDefaultInstance()
+        realm?.executeTransaction {
+            vm = it.where((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>).findFirst()
+            if (vm != null) {
+                onResumeWithRestoredVM(vm)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm?.close()
     }
 
     protected abstract fun onResumeWithFreshVM(vm: VM?)
