@@ -9,16 +9,7 @@ import javax.inject.Named
 
 @Module
 class BaseAppModule(private val app: BaseApp) {
-    @Provides
-    @LibraryScope
-    fun providesBaseApp(): BaseApp {
-        return app
-    }
+    @Provides @LibraryScope fun providesBaseApp(): BaseApp = app
 
-    @Provides
-    @LibraryScope
-    @Named("AppContext")
-    fun providesAppContext(app: BaseApp): Context {
-        return app.applicationContext
-    }
+    @LibraryScope @Provides @Named("AppContext") fun providesAppContext(app: BaseApp): Context = app.applicationContext
 }

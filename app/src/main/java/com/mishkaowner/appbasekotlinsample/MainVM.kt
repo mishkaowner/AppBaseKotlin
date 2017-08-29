@@ -1,15 +1,7 @@
 package com.mishkaowner.appbasekotlinsample
 
-import io.realm.RealmObject
-import io.realm.annotations.Index
-import io.realm.annotations.PrimaryKey
+import com.mishkaowner.appbasekotlin.ui.base.BaseViewModel
 
-
-
-open class MainVM : RealmObject() {
-    @PrimaryKey var id: Long = 0
-
-    @Index var title: String? = null
-
+class MainVM : BaseViewModel {
     var name: String? = null
 }

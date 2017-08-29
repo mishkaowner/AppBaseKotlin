@@ -1,19 +1,15 @@
 package com.mishkaowner.appbasekotlin.ui.base
 
 import android.util.Log
-import io.realm.Realm
-import io.realm.RealmObject
+import com.google.gson.Gson
+import com.mishkaowner.appbasekotlin.util.SharedDataEditor
 import java.lang.reflect.ParameterizedType
+import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : RealmObject>(view: V) : BaseAbstractPresenter<V>(view) {
+abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : BaseViewModel>(view: V) : BaseAbstractPresenter<V>(view) {
     protected var vm: VM? = null
-    private var realm: Realm? = null
-
-    override fun onCreate() {
-        super.onCreate()
-        realm = Realm.getDefaultInstance()
-    }
+    @Inject lateinit var sharedDataEditor: SharedDataEditor
 
     override fun onResume() {
         super.onResume()
@@ -32,23 +28,26 @@ abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : RealmObject>(v
 
     override fun onSave() {
         super.onSave()
-        realm?.executeTransaction { it.insertOrUpdate(vm) }
+        val vmClass = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
+        saveData(vmClass)
+    }
+
+    private fun <T> saveData(t: Class<T>) {
+        sharedDataEditor.setData(t.name, Gson().toJson(vm))
+    }
+
+    private fun <T> loadData(t: Class<T>): T {
+        val data = sharedDataEditor.getData(t.name)
+        return Gson().fromJson(data, t)
     }
 
     override fun onRestore() {
         super.onRestore()
-        realm = Realm.getDefaultInstance()
-        realm?.executeTransaction {
-            vm = it.where((javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>).findFirst()
-            if (vm != null) {
-                onResumeWithRestoredVM(vm)
-            }
+        val vmClass = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
+        vm = loadData(vmClass)
+        if (vm != null) {
+            onResumeWithRestoredVM(vm)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        realm?.close()
     }
 
     protected abstract fun onResumeWithFreshVM(vm: VM?)
