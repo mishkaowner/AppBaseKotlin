@@ -1,3 +1,0 @@
-package com.mishkaowner.appbasekotlinsample
-
-interface MainInteractor

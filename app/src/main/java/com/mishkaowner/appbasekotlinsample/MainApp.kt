@@ -4,6 +4,9 @@ import android.content.Context
 import com.mishkaowner.appbasekotlin.BaseApp
 import com.mishkaowner.appbasekotlin.di.component.DaggerBaseAppComponent
 import com.mishkaowner.appbasekotlin.di.module.BaseAppModule
+import com.mishkaowner.appbasekotlinsample.di.DaggerMainAppComponent
+import com.mishkaowner.appbasekotlinsample.di.MainAppComponent
+import com.mishkaowner.appbasekotlinsample.di.MainAppModule
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import javax.inject.Inject

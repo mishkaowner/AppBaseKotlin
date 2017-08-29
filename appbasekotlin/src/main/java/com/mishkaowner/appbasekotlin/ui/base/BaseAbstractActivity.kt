@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseActivity : AppCompatActivity(), BaseView {
+abstract class BaseAbstractActivity : AppCompatActivity(), BaseView {
     protected val NO_LAYOUT: Int = -1
     protected var disposeOnPause : CompositeDisposable? = null
     protected var disposeOnDestroy : CompositeDisposable? = null

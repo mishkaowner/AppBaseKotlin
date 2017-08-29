@@ -1,7 +1,8 @@
-package com.mishkaowner.appbasekotlinsample
+package com.mishkaowner.appbasekotlinsample.di
 
 import com.mishkaowner.appbasekotlin.di.component.BaseAppComponent
 import com.mishkaowner.appbasekotlin.di.scope.ApplicationScope
+import com.mishkaowner.appbasekotlinsample.MainApp
 import dagger.Component
 
 @ApplicationScope

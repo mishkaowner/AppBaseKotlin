@@ -1,4 +1,4 @@
-package com.mishkaowner.appbasekotlinsample
+package com.mishkaowner.appbasekotlinsample.ui
 
 import com.mishkaowner.appbasekotlin.ui.base.BasePresenter
 
