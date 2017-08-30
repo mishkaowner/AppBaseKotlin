@@ -7,7 +7,8 @@ import io.reactivex.Observable
 import javax.inject.Inject
 
 class MainPresenterImpl @Inject constructor(view: MainView,
-                                            var mainInteractor: MainInteractor) : BaseAbstractPresenterWithVM<MainView, MainVM>(view), MainPresenter {
+                                            var mainInteractor: MainInteractor)
+    : BaseAbstractPresenterWithVM<MainView, MainVM>(view), MainPresenter {
     val logId = "LOG_MainPresenterImpl"
 
     override fun onNameChanged(it: String) {

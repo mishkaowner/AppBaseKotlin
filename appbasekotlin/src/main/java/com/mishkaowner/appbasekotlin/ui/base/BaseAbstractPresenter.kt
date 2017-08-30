@@ -2,7 +2,6 @@ package com.mishkaowner.appbasekotlin.ui.base
 
 import io.reactivex.disposables.CompositeDisposable
 
-
 abstract class BaseAbstractPresenter<out V : BaseView>(protected val view: V) : BasePresenter {
     protected var disposeOnPause: CompositeDisposable? = null
     protected var disposeOnDestroy: CompositeDisposable? = null

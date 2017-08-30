@@ -14,7 +14,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import io.reactivex.disposables.CompositeDisposable
 
-
 abstract class BaseAbstractDialogFragment : DialogFragment(), BaseView {
     protected val NO_LAYOUT: Int = -1
     protected var disposeOnPause: CompositeDisposable? = null

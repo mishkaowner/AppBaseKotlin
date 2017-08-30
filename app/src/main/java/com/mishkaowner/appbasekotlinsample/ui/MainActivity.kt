@@ -4,15 +4,13 @@ import android.widget.Toast
 import com.mishkaowner.appbasekotlin.ui.base.BaseAbstractActivity
 import com.mishkaowner.appbasekotlin.ui.base.BasePresenter
 import com.mishkaowner.appbasekotlin.util.afterTextChanged
-import com.mishkaowner.appbasekotlinsample.di.MainActivityModule
 import com.mishkaowner.appbasekotlinsample.MainApp
 import com.mishkaowner.appbasekotlinsample.R
+import com.mishkaowner.appbasekotlinsample.di.MainActivityModule
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseAbstractActivity(), MainView {
-
-
     @Inject lateinit var presenter: MainPresenter                //Injected elements
 
     override fun display(it: String) {
