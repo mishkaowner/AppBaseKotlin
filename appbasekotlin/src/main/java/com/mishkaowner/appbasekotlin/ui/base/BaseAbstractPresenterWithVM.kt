@@ -1,7 +1,8 @@
 package com.mishkaowner.appbasekotlin.ui.base
 
 import android.util.Log
-import com.google.gson.Gson
+import com.jsoniter.JsonIterator
+import com.jsoniter.output.JsonStream
 import com.mishkaowner.appbasekotlin.util.SharedDataEditor
 import java.lang.reflect.ParameterizedType
 import javax.inject.Inject
@@ -33,12 +34,12 @@ abstract class BaseAbstractPresenterWithVM<out V : BaseView, VM : BaseViewModel>
     }
 
     private fun <T> saveData(t: Class<T>) {
-        sharedDataEditor.setData(t.name, Gson().toJson(vm))
+        sharedDataEditor.setData(t.name, JsonStream.serialize(vm))
     }
 
     private fun <T> loadData(t: Class<T>): T {
         val data = sharedDataEditor.getData(t.name)
-        return Gson().fromJson(data, t)
+        return JsonIterator.deserialize(data, t)
     }
 
     override fun onRestore() {
