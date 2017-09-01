@@ -38,7 +38,7 @@ dependencies {
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile group: 'com.jsoniter', name: 'jsoniter', version: '0.9.15'
+    compile 'com.jsoniter:jsoniter:0.9.15'
 
     testCompile 'junit:junit:4.12'
 }
